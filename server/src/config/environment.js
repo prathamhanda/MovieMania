@@ -40,6 +40,12 @@ const normalizeMongoUri = (value) => {
     return normalized;
 };
 
+const normalizeOrigin = (value) => {
+    if (!value) return value;
+
+    return value.trim().replace(/\/+$/, '');
+};
+
 const env = {
     nodeEnv: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 5000,
@@ -60,7 +66,7 @@ const env = {
     // CORS
     allowedOrigins: (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
         .split(',')
-        .map((origin) => origin.trim())
+        .map(normalizeOrigin)
         .filter(Boolean),
 
     // Rate Limiting
